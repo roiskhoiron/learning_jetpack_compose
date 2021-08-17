@@ -66,13 +66,13 @@ fun Greeting(name: String) {
     var isTapped by remember { mutableStateOf(false) }
     val backgroundColor by animateColorAsState(targetValue = if (isTapped) Color.Green else Color.Transparent)
 
-
     Text(
         text = "Hello $name!",
         modifier = Modifier.padding(24.dp)
             .padding(24.dp)
             .background(color = backgroundColor)
-            .clickable(onClick = {isTapped = !isTapped})
+            .clickable(onClick = {isTapped = !isTapped}),
+        style = MaterialTheme.typography.h1
     )
 }
 
