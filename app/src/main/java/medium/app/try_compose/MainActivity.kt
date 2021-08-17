@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -20,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import medium.app.try_compose.ui.theme.Try_composeTheme
 
 class MainActivity : ComponentActivity() {
-    val listData = listOf("Rois", "Khoironi")
+    val listData = List(1000) {"Rois $it"}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,7 @@ class MainActivity : ComponentActivity() {
 fun Preview() {
     MyApp {
         ShowList(
-            name = listOf("Rois"),
+            name = List(1000) {"Rois $it"},
             counterState = remember {
                 mutableStateOf(0)
             })
@@ -67,14 +69,14 @@ fun Greeting(name: String) {
 @Composable
 fun ShowList(name: List<String>, counterState: MutableState<Int>) {
     Column {
-        Column(modifier = Modifier.weight(1f)) {
-            for (names in name) {
-                Greeting(name = names)
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(items = name) {name ->
+                Greeting(name = name)
                 Divider(color = Color.Gray)
             }
         }
         Divider(color = Color.Transparent, thickness = 32.dp)
-        Box(modifier = Modifier.weight(2f)) {
+        Box(modifier = Modifier.weight(1f)) {
             Counter(
                 count = counterState.value,
                 updateCount = { newCount ->
