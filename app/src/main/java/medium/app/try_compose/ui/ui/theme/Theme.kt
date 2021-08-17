@@ -1,4 +1,4 @@
-package medium.app.try_compose.ui.theme
+package medium.app.try_compose.ui.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -28,7 +28,10 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun Try_composeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun Try_composeTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
+) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -38,9 +41,7 @@ fun Try_composeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
     MaterialTheme(
         colors = colors,
         typography = Typography,
-        shapes = Shapes
-    ) {
-        content()
-    }
-
+        shapes = Shapes,
+        content = content
+    )
 }

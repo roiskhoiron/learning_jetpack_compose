@@ -1,4 +1,4 @@
-package medium.app.try_compose.ui.theme
+package medium.app.try_compose.ui.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
