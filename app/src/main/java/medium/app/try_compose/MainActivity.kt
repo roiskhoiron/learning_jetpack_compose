@@ -3,6 +3,9 @@ package medium.app.try_compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,10 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import medium.app.try_compose.ui.theme.Try_composeTheme
 
 class MainActivity : ComponentActivity() {
-    val listData = List(1000) {"Rois $it"}
+    val listData = List(1000) { "Rois $it" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
 fun Preview() {
     MyApp {
         ShowList(
-            name = List(1000) {"Rois $it"},
+            name = List(1000) { "Rois $it" },
             counterState = remember {
                 mutableStateOf(0)
             })
@@ -63,27 +63,35 @@ fun MyApp(content: @Composable () -> Unit) {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!", modifier = Modifier.padding(24.dp))
+    var isTapped by remember { mutableStateOf(false) }
+    val backgroundColor by animateColorAsState(targetValue = if (isTapped) Color.Green else Color.Transparent)
+
+
+    Text(
+        text = "Hello $name!",
+        modifier = Modifier.padding(24.dp)
+            .padding(24.dp)
+            .background(color = backgroundColor)
+            .clickable(onClick = {isTapped = !isTapped})
+    )
 }
 
 @Composable
 fun ShowList(name: List<String>, counterState: MutableState<Int>) {
     Column {
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(items = name) {name ->
+            items(items = name) { name ->
                 Greeting(name = name)
                 Divider(color = Color.Gray)
             }
         }
         Divider(color = Color.Transparent, thickness = 32.dp)
-        Box(modifier = Modifier.weight(1f)) {
-            Counter(
-                count = counterState.value,
-                updateCount = { newCount ->
-                    counterState.value = newCount
-                }
-            )
-        }
+        Counter(
+            count = counterState.value,
+            updateCount = { newCount ->
+                counterState.value = newCount
+            }
+        )
     }
 }
 
@@ -92,7 +100,7 @@ fun Counter(count: Int, updateCount: (Int) -> Unit) {
     Button(
         onClick = { updateCount(count + 1) },
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = if(count > 5) Color.Green else Color.White
+            backgroundColor = if (count > 5) Color.Green else Color.White
         )
     ) {
         Text(text = "I've been cliked $count times")
