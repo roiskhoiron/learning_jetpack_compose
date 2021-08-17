@@ -52,7 +52,7 @@ fun Preview() {
 
 @Composable
 fun MyApp(content: @Composable () -> Unit) {
-    Try_composeTheme {
+    Try_composeTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxHeight()) {
             Box(modifier = Modifier.padding(all = 25.dp)) {
                 content();
